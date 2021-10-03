@@ -38,6 +38,8 @@ export class Ssmush {
 
     }
 
+    // conditional enforce / validate using kms
+
     // get a secret from secrets manager
 
     public async createSecret(updateSecret?: boolean) : Promise<secretVersionOutput | undefined> {
