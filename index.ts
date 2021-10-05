@@ -2,10 +2,15 @@ import { SSMClient, PutParameterCommand, PutParameterRequest, PutParameterResult
 
 export type SsmType = 'String' | 'StringList' | 'SecureString'
 
+export type deployment = 'common' | 'staging' | 'test' | 'dev' | 'prod' | 'infrastructure'
+
+export type paramKey = `/${deployment}/key/${string}/${string}`
+
 export interface ssmushParams {
     awsEndpoint?: string
     secretName: string
     secretValue: string
+    secretKey: paramKey
 }
 
 export interface ssmushConfig {
@@ -37,6 +42,8 @@ export class Ssmush {
         })
 
     }
+
+    // simply choosing structure
 
     // conditional enforce / validate using kms
 
