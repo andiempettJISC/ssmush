@@ -6,7 +6,7 @@ install dependencies
 
 start localstack
 
-    docker run --rm -it -e "SERVICES=ssm" -p 4566:4566 -p 4571:4571 localstack/localstack
+    docker run --rm -it -e "SERVICES=ssm,secretsmanager" -p 4566:4566 -p 4571:4571 localstack/localstack
 
 build and run
 
