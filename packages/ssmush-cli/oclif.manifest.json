@@ -1,0 +1,1 @@
+{"version":"0.0.0","commands":{"hello":{"id":"hello","pluginName":"ssmush-cli","pluginType":"core","aliases":[],"flags":{"stage":{"name":"stage","type":"option","options":["development","staging","production"]}},"args":[]}}}

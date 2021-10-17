@@ -1,0 +1,60 @@
+{
+  "name": "ssmush-cli",
+  "description": "A CLI to add secrets to AWS SSM Parameter Store with ssmush",
+  "version": "0.0.0",
+  "author": "Andrew Wilson",
+  "bin": {
+    "ssmush-cli": "./bin/run"
+  },
+  "bugs": "https://github.com/androidwiltron/ssmush-cli/issues",
+  "dependencies": {
+    "@oclif/command": "^1",
+    "@oclif/config": "^1",
+    "@oclif/plugin-help": "^3",
+    "ember-cli": "^3.28.1",
+    "global": "^4.4.0",
+    "inquirer": "^8.2.0",
+    "ssmush": "^0.0.1",
+    "tslib": "^1"
+  },
+  "devDependencies": {
+    "@oclif/dev-cli": "^1",
+    "@types/inquirer": "^8.1.3",
+    "eslint": "^5.13",
+    "eslint-config-oclif": "^3.1",
+    "eslint-config-oclif-typescript": "^0.1",
+    "globby": "^10"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "files": [
+    "/bin",
+    "/lib",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
+  "homepage": "https://github.com/androidwiltron/ssmush-cli",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "MIT",
+  "main": "lib/index.js",
+  "oclif": {
+    "commands": "./lib/commands",
+    "bin": "ssmush-cli",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "repository": "androidwiltron/ssmush-cli",
+  "scripts": {
+    "postpack": "rm -f oclif.manifest.json",
+    "posttest": "eslint . --ext .ts --config .eslintrc",
+    "build": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "test": "echo NO TESTS",
+    "version": "oclif-dev readme && git add README.md",
+    "run-cli": "./bin/run hello"
+  },
+  "types": "lib/index.d.ts"
+}
