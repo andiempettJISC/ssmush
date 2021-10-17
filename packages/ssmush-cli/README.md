@@ -38,7 +38,7 @@ USAGE
   $ ssmush-cli hello
 
 OPTIONS
-  --stage=development|staging|production
+  --stage=common|staging|test|dev|prod|infrastructure
 ```
 
 _See code: [lib/commands/hello.js](https://github.com/androidwiltron/ssmush-cli/blob/v0.0.0/lib/commands/hello.js)_

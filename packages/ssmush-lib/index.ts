@@ -3,7 +3,8 @@ import { GetRandomPasswordCommand, SecretsManagerClient, GetRandomPasswordComman
 
 export type SsmType = 'String' | 'StringList' | 'SecureString'
 
-export type deployment = 'common' | 'staging' | 'test' | 'dev' | 'prod' | 'infrastructure'
+export const deployments = ['common', 'staging', 'test', 'dev', 'prod', 'infrastructure'] as const
+export type deployment = typeof deployments[number]
 
 export type paramKey = `/${deployment}/key/${string}/${string}`
 

@@ -1,45 +1,61 @@
 import {Command, flags} from '@oclif/command'
 import * as inquirer from 'inquirer'
-import {Ssmush, deployment} from 'ssmush'
+import {Ssmush, deployment, deployments} from 'ssmush'
+
+// Work around to make exported const assertions not readonly
+const mutable = <T>(t: T): { -readonly [K in keyof T]: T[K] } => t
 
 export class MyCommand extends Command {
   static flags = {
-    stage: flags.string({options: ['development', 'staging', 'production']})
+    stage: flags.string({options: mutable(deployments)})
   }
-  
 
   async run() {
     const {flags} = this.parse(MyCommand)
     let stage = flags.stage
+    const deploymentChoices = deployments.map(name => ({ name }))
+    
     if (!stage) {
       let responses: any = await inquirer.prompt([{
         name: 'stage',
         message: 'select a stage',
         type: 'list',
-        choices: [{name: 'development'}, {name: 'staging'}, {name: 'production'}],
+        choices: deploymentChoices,
       }])
       stage = responses.stage
     }
 
-    let ham = await inquirer.prompt([{
+    // FIXME what if no stage selected?
+
+    let SecretKeyResponse: any = await inquirer.prompt([{
+      name: 'secretKey',
+      message: 'Input the Name of the secret',
+      type: 'input'
+    }])
+    const secretKey = SecretKeyResponse.secretKey
+
+    // FIXME what if nothing inputted?
+
+    let generatedResponse = await inquirer.prompt([{
       name: 'generate',
-      message: 'generate a password',
+      message: 'Would you like to generate a strong password',
       type: 'confirm',
       default: false
     }])
-
-    if (ham) {
+    
+    if (generatedResponse.generate) {
       // call the generate password method
-      const thing = stage as deployment
+      const deploymentStage = stage as deployment
 
       const SsmushClient = new Ssmush({
-        secretName: `/${thing}/key/app/cool`,
+        secretName: `/${deploymentStage}/key/app/${secretKey}`,
         generatePassword: true
       })
 
       const secretVersion = await SsmushClient.createSecret()
 
-      console.log(secretVersion?.version)
+      this.log(`Secret /${deploymentStage}/key/app/${secretKey} version ${secretVersion?.version}`)
+
     } else {
 
       const getSecretInput = await inquirer.prompt([{
@@ -50,18 +66,18 @@ export class MyCommand extends Command {
         mask: '🤫'
       }])
 
-      const thing = stage as deployment
+      const deploymentStage = stage as deployment
 
       const SsmushClient = new Ssmush({
-        secretName: `/${thing}/key/app/cool`,
+        secretName: `/${deploymentStage}/key/app/${secretKey}`,
         secretValue: getSecretInput.secretInput
       })
 
       const secretVersion = await SsmushClient.createSecret()
 
-      console.log(secretVersion?.version)
+      this.log(`Secret /${deploymentStage}/key/app/${secretKey} version ${secretVersion?.version}`)
     }
 
-    this.log(`the stage is: ${stage}`)
+    
   }
 }
