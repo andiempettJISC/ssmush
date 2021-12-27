@@ -1,4 +1,4 @@
-import { SSMClient, PutParameterCommand, PutParameterRequest, PutParameterResult, SSMClientConfig, PutParameterCommandOutput, Tag } from "@aws-sdk/client-ssm";
+import { SSMClient, PutParameterCommand, PutParameterRequest, PutParameterResult, SSMClientConfig, PutParameterCommandOutput, Tag, ListTagsForResourceCommand, ListTagsForResourceRequest } from "@aws-sdk/client-ssm";
 import { GetRandomPasswordCommand, SecretsManagerClient, GetRandomPasswordCommandOutput, GetRandomPasswordCommandInput, GetRandomPasswordRequest, GetRandomPasswordResponse } from '@aws-sdk/client-secrets-manager'
 
 export type SsmType = 'String' | 'StringList' | 'SecureString'
@@ -15,7 +15,10 @@ export interface ssmushParams {
     secretValue?: string
     // Generate a random password to use for the value
     generatePassword?: boolean
-    // Pass the name of the app/lib to tag resources
+    /**
+     * Pass the name of the app/lib to tag resources
+     * @default: 'ssmush'
+     */
     appName?: string
 }
 
@@ -89,15 +92,15 @@ export class Ssmush {
 
         const secretValue = this.secretValue || await this.generateSecret()
 
+        const tags = updateSecret ? undefined : [{Key: 'ManagedBy', Value: this.appName}]
+
         const command = new PutParameterCommand({
             Name: this.secretName,
             Value: secretValue,
             Type: this.SsmType,
             KeyId: this.KmsKeyId,
             Overwrite: updateSecret,
-            Tags: [
-                {Key: 'ManagedBy', Value: this.appName}
-            ]
+            Tags: tags
         })
 
         try {
@@ -107,7 +110,26 @@ export class Ssmush {
 
         } catch (error: any) {            
             if (error.name === 'ParameterAlreadyExists') {
+
+                const resourceTags = await this.client.send(new ListTagsForResourceCommand({
+                    ResourceId: this.secretName,
+                    ResourceType: 'Parameter'
+                }))
+
+                if (resourceTags.TagList) {
+                    for (const eachTag of resourceTags.TagList) {
+
+                        if (JSON.stringify(eachTag) === JSON.stringify({Key: 'ManagedBy', Value: this.appName})) {
+                            throw new Error("Cannot overwrite unmanaged parameters.")
+
+                            return undefined
+                            
+                        }
+                    }
+                }
+
                 const newResult = await this.createSecret(updateSecret=true)
+                
                 return newResult
 
             } else {

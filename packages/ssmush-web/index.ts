@@ -73,6 +73,7 @@ const initAuth = (req: { session: { passport: any; id: any; cookie: any; }; user
   logger.debug('req.session.cookie')
 
   res.locals.userValue = null;
+  res.locals.errorMessage = null;
   res.locals.environments = deployments
   next()
 }
@@ -138,7 +139,15 @@ app.post('/',
       secretValue: req.body.password
     })
 
-    const secretRequest = await createSecret.createSecret()
+    let secretRequest
+    try {
+      secretRequest = await createSecret.createSecret()
+    } catch (error) {
+      res.render('dashboard', {
+        errorMessage: error
+      });
+      return
+    }
 
     var secretResponse = {
       secretKey: createSecret.secretName,
