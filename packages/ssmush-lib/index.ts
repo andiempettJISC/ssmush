@@ -1,4 +1,4 @@
-import { SSMClient, PutParameterCommand, PutParameterRequest, PutParameterResult, SSMClientConfig, PutParameterCommandOutput,  } from "@aws-sdk/client-ssm";
+import { SSMClient, PutParameterCommand, PutParameterRequest, PutParameterResult, SSMClientConfig, PutParameterCommandOutput, Tag } from "@aws-sdk/client-ssm";
 import { GetRandomPasswordCommand, SecretsManagerClient, GetRandomPasswordCommandOutput, GetRandomPasswordCommandInput, GetRandomPasswordRequest, GetRandomPasswordResponse } from '@aws-sdk/client-secrets-manager'
 
 export type SsmType = 'String' | 'StringList' | 'SecureString'
@@ -15,6 +15,8 @@ export interface ssmushParams {
     secretValue?: string
     // Generate a random password to use for the value
     generatePassword?: boolean
+    // Pass the name of the app/lib to tag resources
+    appName?: string
 }
 
 export interface ssmushConfig {
@@ -37,6 +39,7 @@ export class Ssmush {
     private generatePasswordLength?: number
     secretName: string
     SsmType: SsmType
+    appName: string | undefined
 
     constructor(parameters: ssmushParams, config?: ssmushConfig) {
         
@@ -45,6 +48,7 @@ export class Ssmush {
         this.secretName = parameters.secretName
         this.secretValue = parameters.secretValue
         this.SsmType = "SecureString"
+        this.appName = parameters.appName || "ssmush"
 
         this.generatePassword = parameters.generatePassword || false
         this.generatePasswordLength = config ? config.generatePasswordLength : Number(process.env.AWS_ENDPOINT_URL) || 32
@@ -91,6 +95,9 @@ export class Ssmush {
             Type: this.SsmType,
             KeyId: this.KmsKeyId,
             Overwrite: updateSecret,
+            Tags: [
+                {Key: 'ManagedBy', Value: this.appName}
+            ]
         })
 
         try {

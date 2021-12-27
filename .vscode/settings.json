@@ -3,12 +3,21 @@
         "AWS_REGION": "us-east-1",
         "AWS_ACCESS_KEY_ID": "test",
         "AWS_SECRET_ACCESS_KEY": "test",
-        "AWS_ENDPOINT_URL": "http://localhost:4566"
+        "AWS_ENDPOINT_URL": "http://localhost:4566",
+        "SERVICES": "ssm,secretsmanager"
     },
     "terminal.integrated.env.osx": {
         "AWS_REGION": "us-east-1",
         "AWS_ACCESS_KEY_ID": "test",
         "AWS_SECRET_ACCESS_KEY": "test",
-        "AWS_ENDPOINT_URL": "http://localhost:4566"
+        "AWS_ENDPOINT_URL": "http://localhost:4566",
+        "SERVICES": "ssm,secretsmanager"
+    },
+    "terminal.integrated.env.windows": {
+        "AWS_REGION": "us-east-1",
+        "AWS_ACCESS_KEY_ID": "test",
+        "AWS_SECRET_ACCESS_KEY": "test",
+        "AWS_ENDPOINT_URL": "http://localhost:4566",
+        "SERVICES": "ssm,secretsmanager"
     }
 }
