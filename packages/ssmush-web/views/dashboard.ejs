@@ -75,6 +75,27 @@ data "aws_ssm_parameter" "foo" {
 }
           </code></pre>
         </div>
+        <hr class="my-4">
+        <h2>IAM Policy</h2>
+        <p>The minimal AWS IAM policy needed <a
+            href="https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-paramstore-access.html"
+            target="_blank">IAM docs</a></p>
+        <div class="p-3 mb-2 bg-light text-dark">
+          <pre><code>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+          "ssm:GetParameter"
+      ],
+      "Resource": "arn:aws:ssm:us-east-1:&lt;AWS_ACCOUNT_ID&gt;:parameter/<%= userValue.secretKey %>:<%= userValue.secretVersion %>"
+    }
+  ]
+}
+          </code></pre>
+        </div>
       </div>
   </div>
   <%}%>
