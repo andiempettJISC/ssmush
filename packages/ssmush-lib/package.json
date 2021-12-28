@@ -1,6 +1,10 @@
 {
-  "name": "ssmush",
-  "version": "0.0.1",
+  "name": "@androidwiltron/ssmush",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "repository": "git://github.com/androidwiltron/ssmush.git",
+  "version": "0.0.2",
   "description": "A wrapper to simplify ssm parameter store interactions",
   "main": "index.js",
   "license": "MIT",
