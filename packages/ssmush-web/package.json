@@ -1,5 +1,6 @@
 {
   "name": "ssmush-web",
+  "private": "true",
   "version": "0.0.0",
   "description": "",
   "author": "Andrew Wilson <andrew.j.wilson7@googlemail.com>",
