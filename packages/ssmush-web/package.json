@@ -16,7 +16,8 @@
   "scripts": {
     "copy-files": "copyfiles views/*.ejs build/",
     "web": "nodemon index.ts",
-    "build": "tsc && yarn copy-files"
+    "build": "tsc && yarn copy-files",
+    "docker": "docker build ."
   },
   "dependencies": {
     "body-parser": "^1.19.1",

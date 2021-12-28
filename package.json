@@ -11,7 +11,8 @@
   "scripts": {
     "lerna": "lerna",
     "setup": "yarn lerna run --stream",
-    "build": "yarn setup build"
+    "build": "yarn setup build",
+    "docker": "yarn setup docker"
   },
   "devDependencies": {
     "@aws-sdk/types": "^3.34.0",
