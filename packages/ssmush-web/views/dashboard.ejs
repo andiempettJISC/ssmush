@@ -42,13 +42,13 @@
     </form>
     <% if (errorMessage !== null) { %>
       <div class="alert alert-danger" role="alert"> 
-      Could not create the secret due to the following error:<br>
+      ❌ Could not create the secret in AWS parameter store:<br>
       <%= errorMessage %><br>
       </div>
     <% } %>
     <% if(userValue !== null){ %>
       <div class="alert alert-success" role="alert"> 
-      Success! Secret created in AWS parameter store.<br>
+      Secret created in AWS parameter store 🎉<br>
       Key: <%= userValue.secretKey %><br>
       Version: <%= userValue.secretVersion %><br>
       </div>

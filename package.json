@@ -10,7 +10,8 @@
   ],
   "scripts": {
     "lerna": "lerna",
-    "web": "yarn lerna run --stream"
+    "setup": "yarn lerna run --stream",
+    "build": "yarn setup build"
   },
   "devDependencies": {
     "@aws-sdk/types": "^3.34.0",

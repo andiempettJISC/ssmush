@@ -16,7 +16,7 @@ export interface ssmushParams {
     // Generate a random password to use for the value
     generatePassword?: boolean
     /**
-     * Pass the name of the app/lib to tag resources
+     * Pass the name of the app/lib to tag resources.
      * @default: 'ssmush'
      */
     appName?: string
@@ -26,6 +26,12 @@ export interface ssmushConfig {
     KmsKeyId?: string
     awsEndpoint?: string
     generatePasswordLength?: number
+    /**
+     * Controls if existing unmanaged parameters/secrets can be overwitten.
+     * Evaluates existing tags including a special 'ManagedBy' tag on the resource.
+     * @default: false
+     */
+    overwriteUnmanaged?: boolean
 }
 
 interface secretVersionOutput {
@@ -40,21 +46,23 @@ export class Ssmush {
     private secretValue: string | undefined
     private generatePassword: boolean
     private generatePasswordLength?: number
+    private overwriteUnmanaged: boolean | undefined
     secretName: string
     SsmType: SsmType
     appName: string | undefined
 
     constructor(parameters: ssmushParams, config?: ssmushConfig) {
         
-        this.KmsKeyId = config ? config.KmsKeyId : process.env.AWS_KMS_ID
-        this.awsEndpoint = config ? config.awsEndpoint : process.env.AWS_ENDPOINT_URL
+        this.KmsKeyId = config ? config.KmsKeyId || process.env.AWS_KMS_ID : process.env.AWS_KMS_ID
+        this.awsEndpoint = config ? config.awsEndpoint || process.env.AWS_ENDPOINT_URL : process.env.AWS_ENDPOINT_URL
         this.secretName = parameters.secretName
         this.secretValue = parameters.secretValue
         this.SsmType = "SecureString"
         this.appName = parameters.appName || "ssmush"
 
         this.generatePassword = parameters.generatePassword || false
-        this.generatePasswordLength = config ? config.generatePasswordLength : Number(process.env.AWS_ENDPOINT_URL) || 32
+        this.generatePasswordLength = config ? config.generatePasswordLength || Number(process.env.AWS_ENDPOINT_URL) : Number(process.env.AWS_ENDPOINT_URL) || 32
+        this.overwriteUnmanaged = config ? config.overwriteUnmanaged || false : false
 
         this.client = new SSMClient({
             endpoint: this.awsEndpoint
@@ -65,9 +73,6 @@ export class Ssmush {
         })
 
     }
-
-    // simply choosing structure
-
     // conditional enforce / validate using kms
 
     // create a secret with secrets manager
@@ -88,11 +93,38 @@ export class Ssmush {
         
     }
 
+    public async isManaged() : Promise<boolean> {
+
+        const resourceTags = await this.client.send(new ListTagsForResourceCommand({
+            ResourceId: this.secretName,
+            ResourceType: 'Parameter'
+        }))
+
+        if (resourceTags.TagList && resourceTags.TagList.length) {
+            for (const existingTag of resourceTags.TagList) {
+                if (existingTag.Key === 'ManagedBy' && existingTag.Value === this.appName) {
+
+                    return true
+
+                } else {
+                    return false
+                }
+            }
+        } else {
+            return false
+        }
+
+        throw new Error("Cannot evaluate if parameter is managed");
+        
+    }
+
     public async createSecret(updateSecret?: boolean) : Promise<secretVersionOutput | undefined> {
 
         const secretValue = this.secretValue || await this.generateSecret()
 
-        const tags = updateSecret ? undefined : [{Key: 'ManagedBy', Value: this.appName}]
+        const managedTag = {Key: 'ManagedBy', Value: this.appName}
+        // cannot overwrite a parameter and create tags
+        const tags = updateSecret ? undefined : [managedTag]
 
         const command = new PutParameterCommand({
             Name: this.secretName,
@@ -111,30 +143,22 @@ export class Ssmush {
         } catch (error: any) {            
             if (error.name === 'ParameterAlreadyExists') {
 
-                const resourceTags = await this.client.send(new ListTagsForResourceCommand({
-                    ResourceId: this.secretName,
-                    ResourceType: 'Parameter'
-                }))
+                // Evaluate if parameter is tagged and managed by ssmush
+                if (await this.isManaged() || this.overwriteUnmanaged) {
 
-                if (resourceTags.TagList) {
-                    for (const eachTag of resourceTags.TagList) {
-
-                        if (JSON.stringify(eachTag) === JSON.stringify({Key: 'ManagedBy', Value: this.appName})) {
-                            throw new Error("Cannot overwrite unmanaged parameters.")
-
-                            return undefined
-                            
-                        }
-                    }
-                }
-
-                const newResult = await this.createSecret(updateSecret=true)
+                    const newResult = await this.createSecret(updateSecret=true)
                 
-                return newResult
+                    return newResult
+                    
+                } else {
+                    throw new Error("Cannot overwrite existing unmanaged parameters. \
+                    Please create a parameter with a new name or \
+                    contact an administrator.")
+                }
 
             } else {
                 console.log(error)
-                return undefined
+                throw new Error("There was a problem submitting the parameter")
             }
         }
 

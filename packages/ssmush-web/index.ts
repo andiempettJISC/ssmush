@@ -143,9 +143,13 @@ app.post('/',
     try {
       secretRequest = await createSecret.createSecret()
     } catch (error) {
+
+      logger.error(error)
+
       res.render('dashboard', {
         errorMessage: error
       });
+
       return
     }
 

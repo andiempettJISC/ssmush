@@ -15,7 +15,7 @@
   },
   "scripts": {
     "copy-files": "copyfiles views/*.ejs build/",
-    "start": "nodemon index.ts",
+    "web": "nodemon index.ts",
     "build": "tsc && yarn copy-files"
   },
   "dependencies": {
