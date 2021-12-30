@@ -24,12 +24,9 @@ app.use(parser.json())
 
 //Middleware
 app.use(cookieSession({
-  secret: "secret",
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    maxAge: 600000
-  }
+  name: "__session",
+  keys: ["key1"],
+  maxAge: 600000,
 }))
 
 app.use(passport.initialize())
