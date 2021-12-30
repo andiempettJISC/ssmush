@@ -1,7 +1,7 @@
 {
   "name": "ssmush-web",
   "private": "true",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "author": "Andrew Wilson <andrew.j.wilson7@googlemail.com>",
   "homepage": "https://github.com/androidwiltron/ssmush#readme",
@@ -21,7 +21,7 @@
     "create-lockfile": "yarn install --mode update-lockfile"
   },
   "dependencies": {
-    "@androidwiltron/ssmush": "^0.0.2",
+    "@androidwiltron/ssmush": "^0.0.3",
     "body-parser": "^1.19.1",
     "ejs": "^3.1.6",
     "express": "^4.17.1",

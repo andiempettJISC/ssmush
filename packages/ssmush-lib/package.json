@@ -3,10 +3,13 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
+  "author": {
+    "name": "andrew wilson"
+  },
   "repository": "git://github.com/androidwiltron/ssmush.git",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A wrapper to simplify ssm parameter store interactions",
-  "main": "index.js",
+  "main": "build/index.js",
   "license": "MIT",
   "scripts": {
     "build": "tsc",
