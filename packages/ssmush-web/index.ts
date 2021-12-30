@@ -1,7 +1,10 @@
 const express = require('express')
+const http = require('http');
+const { createTerminus } = require('@godaddy/terminus');
 const app = express()
 var parser = require('body-parser');
-const session = require('express-session')
+// const session = require('express-session')
+const cookieSession = require('cookie-session')
 import { body, validationResult } from 'express-validator';
 import path from 'path';
 import { deployment, deployments, Ssmush } from '@androidwiltron/ssmush'
@@ -20,7 +23,7 @@ app.use(parser.urlencoded({ extended: false }))
 app.use(parser.json())
 
 //Middleware
-app.use(session({
+app.use(cookieSession({
   secret: "secret",
   resave: false,
   saveUninitialized: true,
@@ -62,7 +65,21 @@ passport.deserializeUser((user: any, done: (arg0: null, arg1: any) => void) => {
   done(null, user)
 })
 
-app.listen(3001, () => logger.info('Server started on port 3001...'))
+function onSignal () {
+  console.log('server is starting cleanup')
+}
+
+async function onHealthCheck () {
+
+}
+
+const server = http.createServer(app)
+createTerminus(server, {
+  signal: 'SIGINT',
+  healthChecks: { '/healthcheck': onHealthCheck },
+  onSignal
+});
+server.listen(3001, () => logger.info('Server started on port 3001...'))
 
 
 const initAuth = (req: { session: { passport: any; id: any; cookie: any; }; user: any; }, res: any, next: () => void) => {

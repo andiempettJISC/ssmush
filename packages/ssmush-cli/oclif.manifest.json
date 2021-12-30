@@ -1,1 +1,1 @@
-{"version":"0.0.2","commands":{"hello":{"id":"hello","pluginName":"ssmush-cli","pluginType":"core","aliases":[],"flags":{"stage":{"name":"stage","type":"option","options":["common","staging","test","dev","prod","infrastructure"]}},"args":[]}}}
+{"version":"0.0.3","commands":{"hello":{"id":"hello","pluginName":"ssmush-cli","pluginType":"core","aliases":[],"flags":{"stage":{"name":"stage","type":"option","options":["common","staging","test","dev","prod","infrastructure"]}},"args":[]}}}
