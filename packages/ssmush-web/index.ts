@@ -4,7 +4,7 @@ var parser = require('body-parser');
 const session = require('express-session')
 import { body, validationResult } from 'express-validator';
 import path from 'path';
-import { deployment, deployments, Ssmush } from 'ssmush'
+import { deployment, deployments, Ssmush } from '@androidwiltron/ssmush'
 
 const logger = require('pino')()
 

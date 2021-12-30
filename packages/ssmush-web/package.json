@@ -6,9 +6,8 @@
   "author": "Andrew Wilson <andrew.j.wilson7@googlemail.com>",
   "homepage": "https://github.com/androidwiltron/ssmush#readme",
   "license": "MIT",
-  "main": "index.js",
   "publishConfig": {
-    "registry": "https://registry.yarnpkg.com"
+    "registry": "https://npm.pkg.github.com/"
   },
   "repository": {
     "type": "git",
@@ -18,9 +17,11 @@
     "copy-files": "copyfiles views/*.ejs build/",
     "web": "nodemon index.ts",
     "build": "tsc && yarn copy-files",
-    "docker": "docker build ."
+    "docker": "DOCKER_BUILDKIT=1 docker build --secret id=npmrc,src=${NPM_CONFIG_USERCONFIG} .",
+    "create-lockfile": "yarn install --mode update-lockfile"
   },
   "dependencies": {
+    "@androidwiltron/ssmush": "^0.0.2",
     "body-parser": "^1.19.1",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
@@ -28,8 +29,7 @@
     "express-validator": "^6.14.0",
     "passport": "^0.5.0",
     "passport-google-oauth2": "^0.2.0",
-    "pino": "^7.5.1",
-    "ssmush": "^0.0.1"
+    "pino": "^7.5.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",

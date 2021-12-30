@@ -9,13 +9,12 @@
   },
   "bugs": "https://github.com/androidwiltron/ssmush-cli/issues",
   "dependencies": {
+    "@androidwiltron/ssmush": "^0.0.2",
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
-    "ember-cli": "^3.28.1",
     "global": "^4.4.0",
     "inquirer": "^8.2.0",
-    "ssmush": "^0.0.1",
     "tslib": "^1"
   },
   "devDependencies": {

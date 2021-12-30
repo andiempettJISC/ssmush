@@ -1,6 +1,6 @@
 import {Command, flags} from '@oclif/command'
 import * as inquirer from 'inquirer'
-import {Ssmush, deployment, deployments} from 'ssmush'
+import {Ssmush, deployment, deployments} from '@androidwiltron/ssmush'
 
 // Work around to make exported const assertions not readonly
 const mutable = <T>(t: T): { -readonly [K in keyof T]: T[K] } => t
