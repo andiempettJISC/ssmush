@@ -10,15 +10,17 @@ import helmet from 'helmet'
 import { deployment, deployments, Ssmush } from '@androidwiltron/ssmush'
 import passport from 'passport'
 import {Strategy} from 'passport-google-oauth20'
+import crypto from 'crypto'
 
 
 const app = express()
-const logger = pino()
+let logger = pino()
 
 const app_name = process.env.APP_NAME || process.env.name || process.env.npm_package_name
 const googleClientId = process.env.GOOGLE_CLIENT_ID!
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET!
 const googleOrgName = process.env.GOOGLE_ORG_NAME
+const sessionSecret = process.env.SESSION_SECRET || crypto.randomBytes(20).toString("hex")
 const sessionMaxAge = Number(process.env.SESSION_MAX_AGE) || 600000
 const secretMinLength = Number(process.env.SECRET_MIN_LENGTH) || 16
 
@@ -32,7 +34,7 @@ app.use(helmet())
 
 app.use(cookieSession({
   name: "__session",
-  keys: ["key1"],
+  keys: [sessionSecret],
   maxAge: sessionMaxAge,
 }))
 
@@ -48,7 +50,6 @@ const authUser = (request: any, accessToken: any, refreshToken: any, profile: { 
 
 }
 
-//Use "GoogleStrategy" as the Authentication Strategy
 passport.use(new Strategy({
   clientID: googleClientId,
   clientSecret: googleClientSecret,
@@ -122,7 +123,6 @@ app.get("/", checkAuthenticated, (req: { user: { displayName: any; }; }, res: an
   res.render("dashboard.ejs")
 })
 
-//Define the Logout
 app.get("/logout", (req: { logOut: () => void; }, res: { redirect: (arg0: string) => void; }) => {
   req.logOut()
   res.redirect("/auth/google")
@@ -146,6 +146,10 @@ app.post('/',
   body('environments').isIn(deployments),
   body('password').isLength({ min: secretMinLength }),
   async function (req: CustomRequest<FormBody>, res: any) {
+
+    // FIXME why do i have to cast to any type. ???
+    let user = req.user as any
+    const loggerChild = logger.child({ emailAddress: user._json.email })
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -175,12 +179,8 @@ app.post('/',
       secretKey: createSecret.secretName,
       secretVersion: secretRequest?.version
     }
-
-    // FIXME why do i have to cast to any type. ???
-    const user = req.user as any
-
-    const child = logger.child({ emailAddress: user.email })
-    child.info(secretResponse)
+    
+    loggerChild.info(secretResponse)
 
     res.render('dashboard', {
       userValue: secretResponse,
