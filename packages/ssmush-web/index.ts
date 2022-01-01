@@ -1,42 +1,46 @@
-const express = require('express')
-const http = require('http');
-const { createTerminus } = require('@godaddy/terminus');
-const app = express()
-var parser = require('body-parser');
-// const session = require('express-session')
-const cookieSession = require('cookie-session')
-import { body, validationResult } from 'express-validator';
-import path from 'path';
+import express from 'express'
+import cookieSession from 'cookie-session'
+import { body, validationResult } from 'express-validator'
+import parser from 'body-parser'
+import pino from 'pino'
+import http from 'http'
+import path from 'path'
+import { createTerminus } from '@godaddy/terminus'
+import helmet from 'helmet'
 import { deployment, deployments, Ssmush } from '@androidwiltron/ssmush'
+import passport from 'passport'
+import {Strategy} from 'passport-google-oauth20'
 
-const logger = require('pino')()
 
-const passport = require('passport')
-
-const GoogleStrategy = require('passport-google-oauth2').Strategy;
+const app = express()
+const logger = pino()
 
 const app_name = process.env.APP_NAME || process.env.name || process.env.npm_package_name
+const googleClientId = process.env.GOOGLE_CLIENT_ID!
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET!
+const googleOrgName = process.env.GOOGLE_ORG_NAME
+const sessionMaxAge = Number(process.env.SESSION_MAX_AGE) || 600000
+const secretMinLength = Number(process.env.SECRET_MIN_LENGTH) || 16
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(parser.urlencoded({ extended: false }))
 app.use(parser.json())
 
-//Middleware
+// magic web security and best practice
+app.use(helmet())
+
 app.use(cookieSession({
   name: "__session",
   keys: ["key1"],
-  maxAge: 600000,
+  maxAge: sessionMaxAge,
 }))
 
 app.use(passport.initialize())
 app.use(passport.session())
 
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!
-
 const authUser = (request: any, accessToken: any, refreshToken: any, profile: { _json: any; }, done: (arg0: null, arg1: any) => any) => {
-  if (profile._json.hd !== 'zestia.com') {
+  if (profile._json.hd !== googleOrgName) {
     return done(null, false);
   } else {
     return done(null, profile);
@@ -45,9 +49,9 @@ const authUser = (request: any, accessToken: any, refreshToken: any, profile: { 
 }
 
 //Use "GoogleStrategy" as the Authentication Strategy
-passport.use(new GoogleStrategy({
-  clientID: GOOGLE_CLIENT_ID,
-  clientSecret: GOOGLE_CLIENT_SECRET,
+passport.use(new Strategy({
+  clientID: googleClientId,
+  clientSecret: googleClientSecret,
   callbackURL: "http://localhost:3001/auth/google/callback",
   passReqToCallback: true
 }, authUser));
@@ -63,12 +67,12 @@ passport.deserializeUser((user: any, done: (arg0: null, arg1: any) => void) => {
 })
 
 function onSignal () {
-  console.log('server is starting cleanup')
+  logger.info('server is starting cleanup')
+
+  return Promise.allSettled([]);
 }
 
-async function onHealthCheck () {
-
-}
+async function onHealthCheck () {}
 
 const server = http.createServer(app)
 createTerminus(server, {
@@ -79,7 +83,7 @@ createTerminus(server, {
 server.listen(3001, () => logger.info('Server started on port 3001...'))
 
 
-const initAuth = (req: { session: { passport: any; id: any; cookie: any; }; user: any; }, res: any, next: () => void) => {
+const initAuth = function(req: any, res: any, next: any) {
 
   logger.debug('req.session.passport')
   logger.debug('req.user')
@@ -98,7 +102,7 @@ app.use(initAuth)
 app.get('/auth/google',
   passport.authenticate('google', {
     scope: ['email', 'profile'],
-    hd: 'zestia.com',
+    hd: googleOrgName,
     prompt: 'select_account'
   }
   ));
@@ -122,7 +126,7 @@ app.get("/", checkAuthenticated, (req: { user: { displayName: any; }; }, res: an
 app.get("/logout", (req: { logOut: () => void; }, res: { redirect: (arg0: string) => void; }) => {
   req.logOut()
   res.redirect("/auth/google")
-  console.log(`-------> User Logged out`)
+  logger.debug('User logged out')
 })
 
 interface FormBody {
@@ -140,7 +144,7 @@ app.post('/',
 
   checkAuthenticated,
   body('environments').isIn(deployments),
-  body('password').isLength({ min: 16 }),
+  body('password').isLength({ min: secretMinLength }),
   async function (req: CustomRequest<FormBody>, res: any) {
 
     const errors = validationResult(req);
@@ -175,7 +179,6 @@ app.post('/',
     // FIXME why do i have to cast to any type. ???
     const user = req.user as any
 
-    logger.info()
     const child = logger.child({ emailAddress: user.email })
     child.info(secretResponse)
 
