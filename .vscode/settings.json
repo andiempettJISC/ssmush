@@ -5,7 +5,7 @@
         "AWS_SECRET_ACCESS_KEY": "test",
         "AWS_ENDPOINT_URL": "http://localhost:4566",
         "SERVICES": "ssm,secretsmanager",
-        "NPM_CONFIG_USERCONFIG": "${env:HOME}/.npmrc",
+        "NPM_CONFIG_USERCONFIG": ".npmrc",
         "DOCKER_BUILDKIT": "1",
         "COMPOSE_DOCKER_CLI_BUILD": "1",
         "GOOGLE_ORG_NAME": "zestia.com"
@@ -16,7 +16,7 @@
         "AWS_SECRET_ACCESS_KEY": "test",
         "AWS_ENDPOINT_URL": "http://localhost:4566",
         "SERVICES": "ssm,secretsmanager",
-        "NPM_CONFIG_USERCONFIG": "${env:HOME}/.npmrc",
+        "NPM_CONFIG_USERCONFIG": ".npmrc",
         "DOCKER_BUILDKIT": "1",
         "COMPOSE_DOCKER_CLI_BUILD": "1",
         "GOOGLE_ORG_NAME": "zestia.com"
@@ -27,7 +27,7 @@
         "AWS_SECRET_ACCESS_KEY": "test",
         "AWS_ENDPOINT_URL": "http://localhost:4566",
         "SERVICES": "ssm,secretsmanager",
-        "NPM_CONFIG_USERCONFIG": "${env:HOME}/.npmrc",
+        "NPM_CONFIG_USERCONFIG": ".npmrc",
         "DOCKER_BUILDKIT": "1",
         "COMPOSE_DOCKER_CLI_BUILD": "1",
         "GOOGLE_ORG_NAME": "zestia.com"

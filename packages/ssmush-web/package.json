@@ -17,7 +17,7 @@
     "copy-files": "copyfiles views/*.ejs build/",
     "web": "nodemon index.ts",
     "build": "tsc && yarn copy-files",
-    "docker": "DOCKER_BUILDKIT=1 docker build --tag ssmush-web:latest --secret id=npmrc,src=${NPM_CONFIG_USERCONFIG} .",
+    "docker": "DOCKER_BUILDKIT=1 docker build --tag ssmush-web:latest --secret id=NODE_AUTH_TOKEN --secret id=npmrc,src=${NPM_CONFIG_USERCONFIG} .",
     "create-lockfile": "yarn install --mode update-lockfile"
   },
   "dependencies": {

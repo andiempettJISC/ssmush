@@ -2,10 +2,7 @@ version: "3.8"
 
 services:
   web:
-    build:
-      context: "./packages/ssmush-web/"
-      args:
-        NPM_CONFIG_USERCONFIG: ${NPM_CONFIG_USERCONFIG-}
+    image: ssmush-web:latest
     environment:
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
