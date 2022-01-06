@@ -66,7 +66,10 @@ export const routes = function (app: express.Application) {
 
       const createSecret = new Ssmush({
         secretName: `/${req.body.environments}/key/${req.body.appName}/${req.body.secretName}`,
-        secretValue: req.body.password
+        secretValue: req.body.password,
+        extraTags: [
+          {Key: 'CreatedBy', Value: user._json.email}
+        ]
       })
 
       let secretRequest

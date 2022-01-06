@@ -20,6 +20,12 @@ export interface ssmushParams {
      * @default: 'ssmush'
      */
     appName?: string
+    /**
+     * Extra resource tags to add. 
+     * They may provide valuble metadata for auditing and attribution
+     * @default: []
+     */
+    extraTags?: Array<Tag>
 }
 
 export interface ssmushConfig {
@@ -50,6 +56,7 @@ export class Ssmush {
     secretName: string
     SsmType: SsmType
     appName: string | undefined
+    extraTags: Array<Tag>
 
     constructor(parameters: ssmushParams, config?: ssmushConfig) {
         
@@ -59,6 +66,7 @@ export class Ssmush {
         this.secretValue = parameters.secretValue
         this.SsmType = "SecureString"
         this.appName = parameters.appName || "ssmush"
+        this.extraTags = parameters.extraTags || []
 
         this.generatePassword = parameters.generatePassword || false
         this.generatePasswordLength = config ? config.generatePasswordLength || Number(process.env.AWS_ENDPOINT_URL) : Number(process.env.AWS_ENDPOINT_URL) || 32
@@ -122,9 +130,9 @@ export class Ssmush {
 
         const secretValue = this.secretValue || await this.generateSecret()
 
-        const managedTag = {Key: 'ManagedBy', Value: this.appName}
+        const managedTag: Tag = {Key: 'ManagedBy', Value: this.appName}
         // cannot overwrite a parameter and create tags
-        const tags = updateSecret ? undefined : [managedTag]
+        const tags = updateSecret ? undefined : this.extraTags.concat(managedTag)
 
         const command = new PutParameterCommand({
             Name: this.secretName,
