@@ -1,6 +1,6 @@
 localstack:
   startServices: "ssm,secretsmanager"
-  
+
 
 # Default values for ssmush.
 # This is a YAML-formatted file.
@@ -16,12 +16,14 @@ image:
 
 env:
   GOOGLE_ORG_NAME: "zestia.com" 
-  GOOGLE_CLIENT_ID: ""
-  GOOGLE_CLIENT_SECRET: ""
   AWS_REGION: "us-east-1"
   AWS_ACCESS_KEY_ID: "test"
   AWS_SECRET_ACCESS_KEY: "test"
   AWS_ENDPOINT_URL: "http://ssmush-web-localstack:4566"
+
+secrets:
+  GOOGLE_CLIENT_ID: ""
+  GOOGLE_CLIENT_SECRET: ""
 
 imagePullSecrets: []
 nameOverride: ""
