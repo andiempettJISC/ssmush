@@ -13,6 +13,7 @@ import { Config, logger } from './config'
 const config = new Config()
 const app = express()
 
+app.set('trust proxy', true)
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(parser.urlencoded({ extended: false }))

@@ -23,8 +23,10 @@ export const auth = function (app: any) {
     passport.use(new Strategy({
         clientID: config.googleClientId!,
         clientSecret: config.googleClientSecret!,
-        callbackURL: "http://localhost:3001/auth/google/callback",
-        passReqToCallback: true
+        callbackURL: "/auth/google/callback",
+        passReqToCallback: true,
+        proxy: true,
+
     }, authUser));
 
 
