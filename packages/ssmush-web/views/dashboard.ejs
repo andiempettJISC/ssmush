@@ -8,8 +8,10 @@
   }
 </style>
 
-<body>
+<body style="background-color: #ffded6";>
   <div class="container">
+    <div class="card shadow-2-strong" style="border-radius: 1rem;">
+      <div class="card-body p-5">
     <form method="POST" action="/">
       <div class="form-group">
         <label for="inputApp">Application Name</label>
@@ -97,6 +99,8 @@ data "aws_ssm_parameter" "foo" {
           </code></pre>
         </div>
       </div>
+    </div>
+  </div>
   </div>
   <%}%>
 </body>
