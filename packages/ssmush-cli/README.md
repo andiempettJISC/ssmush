@@ -19,7 +19,7 @@ $ npm install -g ssmush-cli
 $ ssmush-cli COMMAND
 running command...
 $ ssmush-cli (-v|--version|version)
-ssmush-cli/0.0.4 darwin-x64 node-v16.13.1
+ssmush-cli/0.0.5 linux-x64 node-v14.19.0
 $ ssmush-cli --help [COMMAND]
 USAGE
   $ ssmush-cli COMMAND
@@ -38,10 +38,10 @@ USAGE
   $ ssmush-cli hello
 
 OPTIONS
-  --stage=staging|test|dev|prod
+  --stage=stage
 ```
 
-_See code: [lib/commands/hello.js](https://github.com/androidwiltron/ssmush-cli/blob/v0.0.4/lib/commands/hello.js)_
+_See code: [lib/commands/hello.js](https://github.com/androidwiltron/ssmush-cli/blob/v0.0.5/lib/commands/hello.js)_
 
 ## `ssmush-cli help [COMMAND]`
 
