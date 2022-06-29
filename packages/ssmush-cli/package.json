@@ -2,14 +2,14 @@
   "name": "ssmush-cli",
   "private": "true",
   "description": "A CLI to add secrets to AWS SSM Parameter Store with ssmush",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": "Andrew Wilson",
   "bin": {
     "ssmush-cli": "./bin/run"
   },
   "bugs": "https://github.com/androidwiltron/ssmush-cli/issues",
   "dependencies": {
-    "@androidwiltron/ssmush": "^0.0.5",
+    "@androidwiltron/ssmush": "^0.0.6",
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
