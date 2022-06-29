@@ -1,19 +1,19 @@
 import {Command, flags} from '@oclif/command'
 import * as inquirer from 'inquirer'
-import {Ssmush, deployment, deployments} from '@androidwiltron/ssmush'
+import {Ssmush, environment, environments} from '@androidwiltron/ssmush'
 
 // Work around to make exported const assertions not readonly
 const mutable = <T>(t: T): { -readonly [K in keyof T]: T[K] } => t
 
 export class MyCommand extends Command {
   static flags = {
-    stage: flags.string({options: mutable(deployments)})
+    stage: flags.string({options: mutable(environments)})
   }
 
   async run() {
     const {flags} = this.parse(MyCommand)
     let stage = flags.stage
-    const deploymentChoices = deployments.map(name => ({ name }))
+    const deploymentChoices = environments.map(name => ({ name }))
     
     if (!stage) {
       let responses: any = await inquirer.prompt([{
@@ -45,7 +45,7 @@ export class MyCommand extends Command {
     
     if (generatedResponse.generate) {
       // call the generate password method
-      const deploymentStage = stage as deployment
+      const deploymentStage = stage as environment
 
       const SsmushClient = new Ssmush({
         secretName: `/${deploymentStage}/key/app/${secretKey}`,
@@ -66,7 +66,7 @@ export class MyCommand extends Command {
         mask: '🤫'
       }])
 
-      const deploymentStage = stage as deployment
+      const deploymentStage = stage as environment
 
       const SsmushClient = new Ssmush({
         secretName: `/${deploymentStage}/key/app/${secretKey}`,

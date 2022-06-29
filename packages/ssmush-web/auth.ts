@@ -1,5 +1,5 @@
 
-import { deployments } from '@androidwiltron/ssmush'
+import { environments } from '@androidwiltron/ssmush'
 import passport from 'passport'
 import { Strategy } from 'passport-google-oauth20'
 import { Config, logger } from './config'
@@ -48,7 +48,7 @@ export const auth = function (app: any) {
 
         res.locals.userValue = null;
         res.locals.errorMessage = null;
-        res.locals.environments = deployments
+        res.locals.environments = environments
         next()
     }
 

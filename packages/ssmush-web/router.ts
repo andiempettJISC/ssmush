@@ -1,6 +1,6 @@
 import express from 'express'
 import { body, validationResult } from 'express-validator'
-import { deployment, deployments, Ssmush } from '@androidwiltron/ssmush'
+import { environment, environments, Ssmush } from '@androidwiltron/ssmush'
 import { Config, logger } from './config'
 import passport from 'passport'
 
@@ -8,7 +8,7 @@ const config = new Config()
 
 export interface FormBody {
   appName: string
-  environments: deployment
+  environments: environment
   password: string
   secretName: string
 }
@@ -51,7 +51,7 @@ export const routes = function (app: express.Application) {
 
   app.post('/',
     checkAuthenticated,
-    body('environments').isIn(deployments),
+    body('environments').isIn(environments),
     body('password').isLength({ min: config.secretMinLength }),
     async function (req: CustomRequest<FormBody>, res: any) {
 

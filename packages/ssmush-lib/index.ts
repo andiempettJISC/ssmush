@@ -3,10 +3,10 @@ import { GetRandomPasswordCommand, SecretsManagerClient, GetRandomPasswordComman
 
 export type SsmType = 'String' | 'StringList' | 'SecureString'
 
-export const deployments = ['common', 'staging', 'test', 'dev', 'prod', 'infrastructure'] as const
-export type deployment = typeof deployments[number]
+export const environments =  process.env.environments ? process.env.environments.split(',') : ['staging', 'test', 'dev', 'prod'] as const
+export type environment = typeof environments[number]
 
-export type paramKey = `/${deployment}/key/${string}/${string}`
+export type paramKey = `/${environment}/key/${string}/${string}`
 
 export interface ssmushParams {
     // The name of the secret
