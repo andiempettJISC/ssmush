@@ -64,3 +64,9 @@ deploy the app to the cluster
 
 visit `https://ssmush.org`
 
+
+## publish
+
+    yarn lerna publish patch ssmush-web
+
+    yarn lerna publish patch --force-publish=ssmush-web
