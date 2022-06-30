@@ -2,6 +2,12 @@
 # yarn lockfile v1
 
 
+"@androidwiltron/ssmush@^0.0.12":
+  version "0.0.22"
+  dependencies:
+    "@aws-sdk/client-secrets-manager" "^3.36.0"
+    "@aws-sdk/client-ssm" "^3.34.0"
+
 "@aws-crypto/ie11-detection@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@aws-crypto/ie11-detection/-/ie11-detection-2.0.0.tgz#bb6c2facf8f03457e949dcf0921477397ffa4c6e"
