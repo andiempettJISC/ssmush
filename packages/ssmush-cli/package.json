@@ -9,7 +9,7 @@
   },
   "bugs": "https://github.com/androidwiltron/ssmush-cli/issues",
   "dependencies": {
-    "@androidwiltron/ssmush": "^0.0.12",
+    "@androidwiltron/ssmush": "^0.0.22",
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
