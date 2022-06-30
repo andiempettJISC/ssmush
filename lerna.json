@@ -1,5 +1,5 @@
 {
-  "version": "0.0.16",
+  "version": "0.0.17",
   "packages": [
     "packages/*"
   ],
@@ -7,7 +7,10 @@
   "useWorkspaces": true,
   "command": {
     "publish": {
-      "registry": "https://npm.pkg.github.com"
+      "registry": [
+        "https://npm.pkg.github.com",
+        "https://registry.npmjs.org"
+      ]
     }
   }
 }

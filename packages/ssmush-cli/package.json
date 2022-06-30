@@ -2,7 +2,7 @@
   "name": "ssmush-cli",
   "private": "true",
   "description": "A CLI to add secrets to AWS SSM Parameter Store with ssmush",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "author": "Andrew Wilson",
   "bin": {
     "ssmush-cli": "./bin/run"
