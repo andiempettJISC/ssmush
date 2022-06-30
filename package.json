@@ -1,0 +1,28 @@
+{
+  "name": "ssmush",
+  "private": "true",
+  "version": "0.0.1",
+  "description": "A wrapper to simplify ssm parameter store interactions",
+  "main": "index.js",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "lerna": "lerna",
+    "setup": "yarn lerna run --stream",
+    "build": "yarn setup build",
+    "docker": "yarn setup docker"
+  },
+  "devDependencies": {
+    "@aws-sdk/types": "^3.34.0",
+    "@types/node": "^16.10.2",
+    "lerna": "^4.0.0",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.3"
+  },
+  "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.36.0",
+    "@aws-sdk/client-ssm": "^3.34.0"
+  }
+}

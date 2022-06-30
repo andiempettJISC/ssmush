@@ -1,0 +1,107 @@
+<meta charset="UTF-8">
+<title>Create a Secret</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+  body {
+    padding-top: 50px;
+    font-family: "Graphik Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+</style>
+
+<body style="background-color: #ffded6";>
+  <div class="container">
+    <div class="card shadow-2-strong" style="border-radius: 1rem;">
+      <div class="card-body p-5">
+    <form method="POST" action="/">
+      <div class="form-group">
+        <label for="inputApp">Application Name</label>
+        <input class="form-control" id="inputApp" name="appName">
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlSelect1">Environment</label>
+        <select class="form-control" id="exampleFormControlSelect1" name="environments">
+          <% for (let i of environments) { %>
+            <option>
+              <%= i %>
+            </option>
+            <% } %>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="inputSecretName">Secret Name</label>
+        <input class="form-control" id="inputSecretName" name="secretName" placeholder="e.g. my_super_secret">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Secret Value</label>
+        <input type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{16,63}" class="form-control"
+          id="exampleInputPassword1" name="password" placeholder="Secret">
+        <small id="passwordHelpBlock" class="form-text text-muted">
+          Your Secret must be 16-63 characters long, contain letters and numbers, and must not contain spaces, special
+          characters, or emoji.
+        </small>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <% if (errorMessage !== null) { %>
+      <div class="alert alert-danger" role="alert"> 
+      ❌ Could not create the secret in AWS parameter store:<br>
+      <%= errorMessage %><br>
+      </div>
+    <% } %>
+    <% if(userValue !== null){ %>
+      <div class="alert alert-success" role="alert"> 
+      Secret created in AWS parameter store 🎉<br>
+      Key: <%= userValue.secretKey %><br>
+      Version: <%= userValue.secretVersion %><br>
+      </div>
+      <div class="jumbotron">
+        <h2>Ansible</h2>
+        <p>Use a lookup to get existing secrets from parameter store see the <a
+            href="https://docs.ansible.com/ansible/latest/collections/amazon/aws/aws_ssm_lookup.html"
+            target="_blank">Ansible docs</a></p>
+        <div class="p-3 mb-2 bg-light text-dark">
+          <pre><code>
+- name: lookup ssm parameter store in the current region
+  debug: msg="{{ lookup('aws_ssm', '<%= userValue.secretKey %>:<%= userValue.secretVersion %>' ) }}"
+        </code></pre>
+        </div>
+        <hr class="my-4">
+        <h2>Terraform</h2>
+        <p>A data lookup can be used to get existing secrets from parameter store see the <a
+            href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter"
+            target="_blank">Terraform docs</a></p>
+        <div class="p-3 mb-2 bg-light text-dark">
+          <pre><code>
+data "aws_ssm_parameter" "foo" {
+  name = "<%= userValue.secretKey %>:<%= userValue.secretVersion %>"
+}
+          </code></pre>
+        </div>
+        <hr class="my-4">
+        <h2>IAM Policy</h2>
+        <p>The minimal AWS IAM policy needed <a
+            href="https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-paramstore-access.html"
+            target="_blank">IAM docs</a></p>
+        <div class="p-3 mb-2 bg-light text-dark">
+          <pre><code>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+          "ssm:GetParameter"
+      ],
+      "Resource": "arn:aws:ssm:us-east-1:&lt;AWS_ACCOUNT_ID&gt;:parameter/<%= userValue.secretKey %>:<%= userValue.secretVersion %>"
+    }
+  ]
+}
+          </code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <%}%>
+</body>

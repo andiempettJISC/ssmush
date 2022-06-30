@@ -1,0 +1,29 @@
+{
+  "name": "@androidwiltron/ssmush",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "author": {
+    "name": "andrew wilson"
+  },
+  "repository": "git://github.com/androidwiltron/ssmush.git",
+  "version": "0.0.15",
+  "description": "A wrapper to simplify ssm parameter store interactions",
+  "main": "build/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "ssmush": "ts-node main.ts"
+  },
+  "devDependencies": {
+    "@aws-sdk/types": "^3.34.0",
+    "@types/node": "^16.10.2",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.3"
+  },
+  "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.36.0",
+    "@aws-sdk/client-ssm": "^3.34.0"
+  },
+  "gitHead": "43d3572eacae46b796f5b434be56ee4616bfaf0b"
+}

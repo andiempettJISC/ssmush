@@ -1,0 +1,35 @@
+{
+    "terminal.integrated.env.linux": {
+        "AWS_REGION": "us-east-1",
+        "AWS_ACCESS_KEY_ID": "test",
+        "AWS_SECRET_ACCESS_KEY": "test",
+        "AWS_ENDPOINT_URL": "http://localhost:4566",
+        "SERVICES": "ssm,secretsmanager",
+        "NPM_CONFIG_USERCONFIG": ".npmrc",
+        "DOCKER_BUILDKIT": "1",
+        "COMPOSE_DOCKER_CLI_BUILD": "1",
+        "GOOGLE_ORG_NAME": "zestia.com"
+    },
+    "terminal.integrated.env.osx": {
+        "AWS_REGION": "us-east-1",
+        "AWS_ACCESS_KEY_ID": "test",
+        "AWS_SECRET_ACCESS_KEY": "test",
+        "AWS_ENDPOINT_URL": "http://localhost:4566",
+        "SERVICES": "ssm,secretsmanager",
+        "NPM_CONFIG_USERCONFIG": ".npmrc",
+        "DOCKER_BUILDKIT": "1",
+        "COMPOSE_DOCKER_CLI_BUILD": "1",
+        "GOOGLE_ORG_NAME": "zestia.com"
+    },
+    "terminal.integrated.env.windows": {
+        "AWS_REGION": "us-east-1",
+        "AWS_ACCESS_KEY_ID": "test",
+        "AWS_SECRET_ACCESS_KEY": "test",
+        "AWS_ENDPOINT_URL": "http://localhost:4566",
+        "SERVICES": "ssm,secretsmanager",
+        "NPM_CONFIG_USERCONFIG": ".npmrc",
+        "DOCKER_BUILDKIT": "1",
+        "COMPOSE_DOCKER_CLI_BUILD": "1",
+        "GOOGLE_ORG_NAME": "zestia.com"
+    }
+}
