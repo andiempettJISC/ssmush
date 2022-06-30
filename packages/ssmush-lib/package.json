@@ -7,7 +7,7 @@
     "name": "andrew wilson"
   },
   "repository": "git://github.com/androidwiltron/ssmush.git",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A wrapper to simplify ssm parameter store interactions",
   "main": "build/index.js",
   "license": "MIT",
