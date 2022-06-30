@@ -8,7 +8,7 @@
     "name": "andrew wilson"
   },
   "repository": "git://github.com/androidwiltron/ssmush.git",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "A wrapper to simplify ssm parameter store interactions",
   "main": "build/index.js",
   "license": "MIT",
@@ -26,5 +26,5 @@
     "@aws-sdk/client-secrets-manager": "^3.36.0",
     "@aws-sdk/client-ssm": "^3.34.0"
   },
-  "gitHead": "e13dc1ff4c7a2593abbe16dddd2266856eb2d2a2"
+  "gitHead": "2548c5dbf8ca4707a79d4bd465e7339ccf56eb05"
 }
