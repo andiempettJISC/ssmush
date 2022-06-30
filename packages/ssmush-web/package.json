@@ -1,13 +1,13 @@
 {
   "name": "ssmush-web",
   "private": "true",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "",
   "author": "Andrew Wilson <andrew.j.wilson7@googlemail.com>",
   "homepage": "https://github.com/androidwiltron/ssmush#readme",
   "license": "MIT",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "registry": "https://npm.pkg.github.com/@androidwiltron"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
     "create-lockfile": "yarn install --mode update-lockfile"
   },
   "dependencies": {
-    "@androidwiltron/ssmush": "^0.0.7",
+    "@androidwiltron/ssmush": "^0.0.8",
     "@godaddy/terminus": "^4.9.0",
     "body-parser": "^1.19.1",
     "cookie-session": "^2.0.0",
