@@ -11,9 +11,7 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package*.json ./
 
-RUN --mount=type=ssh --mount=type=secret,id=NODE_AUTH_TOKEN --mount=type=secret,id=npmrc,dst=/usr/src/app/.npmrc \
-    export NODE_AUTH_TOKEN="$(cat /run/secrets/NODE_AUTH_TOKEN)" \
-    && yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile
 
 # Bundle app source
 COPY build/. .
