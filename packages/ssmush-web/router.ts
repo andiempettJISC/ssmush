@@ -43,7 +43,7 @@ export const routes = function (app: express.Application) {
     res.render("dashboard.ejs")
   })
 
-  app.get("/logout", (req: { logOut: () => void; }, res: { redirect: (arg0: string) => void; }) => {
+  app.get("/logout", (req: any, res: any) => {
     req.logOut()
     res.redirect("/auth/google")
     logger.debug('User logged out')
