@@ -33,9 +33,11 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      -
-        name: Build
-        run: yarn docker
+          
+      - run: yarn install
+      - run: yarn lerna bootstrap
+      - run: yarn build
+      - run: yarn docker
         
       - run: docker tag ssmush-web:latest ghcr.io/${{github.repository}}:latest
 
